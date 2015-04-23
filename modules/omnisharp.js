@@ -86,7 +86,6 @@ define(function (require, exports, module) {
                 deferred.resolve(res);
             })
             .fail(function (err) {
-                alert(err);
                 deferred.reject(err);
             });
 

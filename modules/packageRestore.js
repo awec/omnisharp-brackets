@@ -4,10 +4,10 @@
 define(function (require, exports, module) {
     'use strict';
 
-    var CodeInspection = brackets.getModule("language/CodeInspection"),
+    var CodeInspection = brackets.getModule('language/CodeInspection'),
         DocumentManager = brackets.getModule('document/DocumentManager'),
         Omnisharp = require('modules/omnisharp'),
-        Console = require('modules/console');
+        FileUtils = brackets.getModule('file/FileUtils');
 
 
     function scanFileAsync(text, fullPath) {
@@ -15,13 +15,14 @@ define(function (require, exports, module) {
         var document = DocumentManager.getCurrentDocument(),
             filename = document.file._path;
         
-        
-        var request = [];
-        request.push({
-            fileName: filename
-        });
-        
-        Omnisharp.packageRestore(request);
+        if (FileUtils.getBaseName(filename) === 'project.json') {
+            var request = [];
+            request.push({
+                fileName: filename
+            });
+
+            Omnisharp.packageRestore(request);
+        }
         
         return deferred.promise();
     }
