@@ -170,6 +170,25 @@ maxerr: 50, node: true */
             }
         });
     }
+    
+    function callServiceArray(service, data, callback) {
+        var url = 'http://localhost:' + _port + '/' + service;
+        
+        for(var i = 0; i < data.length; i++) {
+            data[i].fileName = path.resolve(data[i].fileName);
+        }
+        
+        request.post(url, {
+            json: data
+        }, function (err, res, body) {
+            console.info(body);
+            if (!err && res.statusCode === 200) {
+                callback(null, body);
+            } else {
+                callback(err);
+            }
+        });
+    }
 
     function init(domainManager) {
         _domainManager = domainManager;
@@ -209,6 +228,26 @@ maxerr: 50, node: true */
             _domainName,
             'callService',
             callService,
+            true,
+            'Make a request to omnisharp server',
+            [
+                {
+                    name: 'service',
+                    type: 'string',
+                    description: 'The name of the onmisharp service'
+                },
+                {
+                    name: 'data',
+                    type: 'json',
+                    description: 'Data to send to omnisharp service'
+                }
+            ]
+        );
+        
+        _domainManager.registerCommand(
+            _domainName,
+            'callServiceArray',
+            callServiceArray,
             true,
             'Make a request to omnisharp server',
             [

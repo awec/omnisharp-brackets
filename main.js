@@ -19,7 +19,8 @@ define(function (require, exports, module) {
         PreferencesManager = brackets.getModule('preferences/PreferencesManager'),
         prefs = PreferencesManager.getExtensionPrefs('omnisharp'),
         LanguageManager = brackets.getModule("language/LanguageManager"),
-        Console = require('modules/console');
+        Console = require('modules/console'),
+        PackageRestore = require('modules/packageRestore');
 
     prefs.definePreference('startOmnisharp', 'string', 'alt-o');
     prefs.definePreference('stopOmnisharp', 'string', 'alt-shift-o');
@@ -72,6 +73,7 @@ define(function (require, exports, module) {
         Toolbar.init();
         ReferenceDisplay.init();
         Console.init();
+        PackageRestore.init();
 
         ExtensionUtils.loadStyleSheet(module, 'styles/omnisharp.css');
 

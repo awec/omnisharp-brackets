@@ -77,6 +77,21 @@ define(function (require, exports, module) {
 
         return deferred;
     }
+    
+    function makeCleanRequestDeferred(service, request) {
+        var deferred = new $.Deferred();
+        
+        Omnisharp.exec('callServiceArray', service, request)
+            .done(function (res) {
+                deferred.resolve(res);
+            })
+            .fail(function (err) {
+                alert(err);
+                deferred.reject(err);
+            });
+
+        return deferred;
+    }
 
     function onOmnisharpError(data) {
         console.error(data);
@@ -169,5 +184,9 @@ define(function (require, exports, module) {
 
     exports.codeFormat = function (request) {
         return makeRequestDeferred('codeFormat', request);
+    };
+    
+    exports.packageRestore = function (request) {
+        return makeCleanRequestDeferred('filesChanged', request);
     };
 });
